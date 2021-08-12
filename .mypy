@@ -16,3 +16,6 @@ ignore_missing_imports = True
 
 [mypy-py2exe.distutils_buildexe.*]
 ignore_missing_imports = True
+
+[mypy-versioneer.*]
+ignore_missing_imports = True
