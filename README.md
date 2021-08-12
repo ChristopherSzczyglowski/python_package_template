@@ -6,7 +6,7 @@
 
 | Parameter    | Value        |
 | :---         | :----:       |
-| OS           | Linunx/WSL 2 |
+| OS           | Linux/WSL 2 |
 | Python       | > 3.8        |
 | Build system | `setuptools` |
 
