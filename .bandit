@@ -1,3 +1,3 @@
 exclude_dirs : ['env', '.vscode']
 assert_used:
-  skips: ['*/test_*.py', './versioneer.py', './src/python_template/_version.py']
+  skips: ['*/test_*.py', './versioneer.py', './src/python_package_template/_version.py']
