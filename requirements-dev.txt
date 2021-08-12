@@ -1,0 +1,12 @@
+pre-commit
+pytest
+pytest-cov
+pytest-mock
+black==21.7b0
+pylint
+safety
+bandit
+mypy
+coverage==6.0b1
+sphinx
+versioneer

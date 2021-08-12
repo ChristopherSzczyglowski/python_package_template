@@ -1,0 +1,3 @@
+include requirements*.txt
+include versioneer.py
+include src/python_package_template/_version.py

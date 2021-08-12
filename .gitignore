@@ -1,0 +1,22 @@
+# Environments
+env
+venv
+
+# IDE
+.vscode
+
+# Python extensions
+*.pyc
+
+# Builds
+dist
+build
+*.egg-info
+
+# Documentation
+docs/build
+docs/source/python_package_template.rst
+docs/source/modules.rst
+
+# Coverage metrics
+.coverage

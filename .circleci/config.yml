@@ -1,0 +1,275 @@
+# CircleCI configuration script for Python package template
+#
+# In this config file we define a single workflow `setup-test-build` that
+# runs the jobs necessary to
+#   - check the code formatting (pre-commit)
+#   - install the dependencies (setup-env)
+#   - check the code style and check types (linting)
+#   - run the test suite (unit-tests)
+#   - check for security vulnerabilities (security)
+#   - build the distribution files (build-dist)
+#   - build the documentation (build-docs)
+#
+# The outputs of this process are the distribution files for the python
+# application (source and built) and the documentation files rendered as HTML.
+#
+# Resources:
+#   - CircleCI Python example config file
+#     + https://circleci.com/docs/2.0/language-python/
+#   - CircleCI workflow overview file
+#     + https://circleci.com/docs/2.0/workflows/
+#   - CircleCI Orb overview
+#     + https://circleci.com/developer/orbs/orb/codecov/codecov
+#   - Using caches in CircleCI
+#     + https://circleci.com/docs/2.0/caching/
+#   - Stored test data in CircleCI
+#     + https://circleci.com/docs/2.0/collect-test-data/
+
+version: 2.1
+
+orbs:
+  # https://circleci.com/developer/orbs/orb/codecov/codecov
+  codecov: codecov/codecov@1.2.5
+
+# See: https://circleci.com/docs/2.0/workflows/
+workflows:
+  version: 2
+  setup-test-build:
+    jobs:
+      - pre-commit
+      - setup-env:
+          requires:
+            - pre-commit
+      - linting:
+          requires:
+            - setup-env
+      - unit-tests:
+          requires:
+            - setup-env
+      - security:
+          requires:
+            - setup-env
+      - build-dist:
+          requires:
+            - linting
+            - unit-tests
+            - security
+      - build-docs:
+          requires:
+              - linting
+              - unit-tests
+              - security
+
+commands:
+  restore_all_dependency_cache:
+    steps:
+      - restore_cache:
+        # Use a partial key match to pick up the cache created in `setup-env`
+        # - See: https://circleci.com/docs/2.0/caching/#writing-to-the-cache-in-workflows
+          key: all-deps-
+
+jobs:
+  pre-commit:
+    # Runs pre-commit checks on the repository
+    docker:
+      - image: cimg/python:3.9
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: install pre-commit
+          command: |
+            python3 -m pip install pre-commit
+      - run:
+          name: store config data
+          # Copy the pre-commit config YAML into the a new file then append
+          # the python version
+          # - This prevents the cache being used if we upgrade the python ver
+          command: |
+            cp .pre-commit-config.yaml pre-commit-cache-key.txt
+            python --version --version >> pre-commit-cache-key.txt
+      - restore_cache:
+          key: pre-commit-cache-{{ checksum "pre-commit-cache-key.txt" }}
+      - run:
+          name: pre-commit
+          # Run pre-commit
+          command: |
+            python3 -m pre_commit run --all-files
+      - save_cache:
+          key: pre-commit-cache-{{ checksum "pre-commit-cache-key.txt" }}
+          paths:
+            - ~/.cache/pre-commit
+  setup-env:
+    # Provides the environment to run the remaining jobs
+    docker:
+      - image: cimg/python:3.9
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: collect dependencies
+          # Collect the complete dependency list in a new file
+          # which will be used to register the cache
+          command: |
+            touch requirements-all.txt
+            cat requirements.txt >> requirements-all.txt
+            cat requirements-dev.txt >> requirements-all.txt
+      - restore_cache:
+          key: all-deps-{{ checksum "requirements-all.txt"}}
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv env
+            source env/bin/activate
+            python3 -m pip install -r requirements.txt
+            python3 -m pip install -r requirements-dev.txt
+      - save_cache:
+          key: all-deps-{{ checksum "requirements-all.txt"}}
+          paths:
+            - "env"
+  linting:
+    # Performs static checks on the code quality
+    docker:
+      - image: cimg/python:3.9
+    resource_class: small
+    steps:
+      - checkout
+      - restore_all_dependency_cache
+      - run:
+          name: run pylint
+          command: |
+            source env/bin/activate
+            pylint --rcfile=.pylintrc src tests
+      - run:
+          name: run mypy
+          command: |
+            source env/bin/activate
+            mypy --config-file .mypy .
+  unit-tests:
+    # Runs the test framework
+    docker:
+      - image: cimg/python:3.9
+    resource_class: small
+    steps:
+      - checkout
+      - restore_all_dependency_cache
+      - run:
+          name: run tests
+          # Run the test suite
+          #
+          # Steps:
+          # - Stores junit-formatted XML in reports/coverage/test_summary.xml
+          # - Processes the test coverage and stores a coverage report in
+          #   reports/coverage/test_coverage.xml
+          #
+          # Additional args for `pytest`:
+          # * --cov=python_package_template:
+          #     Requests a coverage report of the module
+          # * --junitxml=reports/coverage/test_cov.xml
+          #     Store test coverage report in a junit-formatted XML file
+          # * tests:
+          #     The name of the folder containing the test_*.py files
+          # * -rxXs
+          #     Prints a short summary of the skipped & xfail tests
+          #
+          # Additional args for `coverage`:
+          # * xml:
+          #     Requests XML output format
+          # * -o:
+          #     Specifies the path of the output coverage file
+          command: |
+            source env/bin/activate
+            mkdir reports/coverage --parents
+            python3 -m pytest tests
+            python3 -m pytest --cov=python_package_template --junitxml=reports/coverage/test_summary.xml tests -rxXs
+            coverage xml -o reports/coverage/test_coverage.xml
+      - store_test_results:
+          # Store the auto-generated reports for further analysis (if required)
+          # See: https://circleci.com/docs/2.0/collect-test-data/
+          path: reports
+      - codecov/upload:
+          # Provide a copy of the test coverage report to CodeCov
+          file: reports/coverage/test_coverage.xml
+  security:
+    # Checks for vulnerabilities in the code and dependencies
+    docker:
+      - image: cimg/python:3.9
+    resource_class: small
+    steps:
+      - checkout
+      - restore_all_dependency_cache
+      - run:
+          name: run bandit
+          # Run `bandit` on the directory
+          #
+          # Additional args:
+          # * -r:
+          #   Recurse over the directory contents
+          # * -c .bandit:
+          #   Use the configuration settings in `.bandit`
+          command: |
+            source env/bin/activate
+            bandit -r -c .bandit .
+      - run:
+          name: run safety
+          # Run `safety` on the current environment
+          command: |
+            source env/bin/activate
+            pip freeze | safety check --stdin
+  build-dist:
+    # Creates the source and built distribution archives
+    docker:
+      - image: cimg/python:3.9
+    resource_class: small
+    steps:
+      - checkout
+      - restore_all_dependency_cache
+      - run:
+          name: build distribution archives
+          command: |
+            source env/bin/activate
+            python3 -m pip install wheel
+            python3 setup.py sdist bdist_wheel
+      - store_artifacts:
+          # Store the build artifacts
+          path: dist
+  build-docs:
+    # Creates the documentation
+    docker:
+      - image: cimg/python:3.9
+    resource_class: small
+    steps:
+      - checkout
+      - restore_all_dependency_cache
+      - run:
+          name: build docs
+            # Automatically builds the documentation
+            #
+            # Steps:
+            #   - Build dynamic docmentation from the docstrings in the Python
+            #     files and modules found in `src/python_package_template`
+            #   - Build the static documentation files in `docs/source`
+            #
+            # Additional args for `sphinx-apidoc`:
+            #   * -f:
+            #     Force `apidoc` to overwrite files
+            #   * -o:
+            #     The target directory for the auto-generated docs
+            #
+            # Additional args for `sphinx-build`
+            #   * -b:
+            #     The type of documentation to create
+          command: |
+            source env/bin/activate
+            sphinx-apidoc -f -o docs/source src/python_package_template
+            sphinx-build -b html docs/source docs/build
+      - run:
+          name: compress artifacts
+          # We compress the artifacts to improve speed and allow all docs to be
+          # downloaded as a single file
+          command: |
+            cd docs
+            tar -cvzf docs-html.tar.gz build
+      - store_artifacts:
+          # Store the build artifacts
+          path: docs/docs-html.tar.gz
