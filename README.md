@@ -186,7 +186,7 @@ The following jobs are defined in the [CircleCI config file](./.circleci/config.
 
 We use the [fan-out/fan-in workflow](https://circleci.com/docs/2.0/workflows/#fan-outfan-in-workflow-example) strategy to maximise concurrency.
 
-![CircleCI workflow diagram for python_package_template repository](https://github.com/ChristopherSzczyglowski/python_package_template/blob/develop/docs/source/_static/circleci_workflow_diagram.PNG?raw=true)
+![CircleCI workflow diagram for python_package_template repository](https://github.com/ChristopherSzczyglowski/python_package_template/blob/main/docs/source/_static/circleci_workflow_diagram.PNG?raw=true)
 
 The CI jobs `setup-env` and `pre-commit` can be tested locally using the the CircleCI CLI (requires Docker). The other jobs use caching to persist the dependency data between jobs, which is currently unsupported by the CircleCI CLI.
 
@@ -235,7 +235,7 @@ with these changes feel free to revert the changes made in these files.
 [TODO - Read up on this for automatic versioning](https://eridem.net/version-bumping-changelog-script-tips-for-your-ci-cd-pipelines)
 
 ## License
-
+MIT
 
 ## Authors
 
