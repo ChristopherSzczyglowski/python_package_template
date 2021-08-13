@@ -88,7 +88,7 @@ To install the package dependencies
 This repository uses the following developer tools:
 
 * [pre-commit](https://pre-commit.com/): `pre-commit` is provided as a developer dependency. To install pre-commit use `pre-commit install` and then run on all files using `pre-commit run --all-files`
-* [CircleCI](): Continuous Integration is provided by CircleCI. The [CircleCI CLI](https://circleci.com/docs/2.0/local-cli/) can be used to debug CI jobs locally.
+* [CircleCI](https://circleci.com/): Continuous Integration is provided by CircleCI. The [CircleCI CLI](https://circleci.com/docs/2.0/local-cli/) can be used to debug CI jobs locally.
 * [pylint](https://pypi.org/project/pylint/): Linting is provided by `pylint`
 * [mypy](https://pypi.org/project/mypy/): Static type checking is provided by `mypy`
 * [bandit](https://pypi.org/project/bandit/): Code security is provided by `bandit`
