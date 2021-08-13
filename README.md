@@ -214,8 +214,9 @@ This will create several html files in the `docs/build` directory. To view the
 docs in a web browser simply open the `docs/build/index.html` file.
 
 ## Deploy
-Deployment is a term used loosely to describe the act of hosting the code remotely on
-GitHub, running Continuous Integration (CI), monitoring code health and versioning the code.
+In this repository, "deploy" is a term used to loosely describe the act of
+hosting the code remotely on GitHub, running Continuous Integration (CI),
+monitoring code health and versioning the code.
 
 For more information of CI/CD checkout the [CI/CD Checklist and associated sources](https://github.com/users/ChristopherSzczyglowski/projects/1).
 ### Continuous Integration
