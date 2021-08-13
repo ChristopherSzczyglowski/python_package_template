@@ -12,6 +12,21 @@
 
 Provides a minimal template for a Python package repository.
 
+Table of Contents
+* [Getting Started](#getting-started)
+* [Usage](#usage)
+* [Setup](#setup)
+* [Test](#test)
+* [Build](#build)
+* [Document](#document)
+* [Deploy](#deploy)
+* [License](#license)
+* [Authors](#authors)
+
+**Other Python package templates**
+* [Python Packaging Authority sample repository](https://github.com/pypa/sampleproject) * [github/ionelmc/cookiecutter-pylibrary](https://github.com/ionelmc/cookiecutter-pylibrary)
+* [github/audreyfeldroy/cookiecutter-pypackage](https://github.com/audreyfeldroy/cookiecutter-pypackage)
+
 ## Usage
 This repository provides the basic setup to enable a Setup> Test > Build > Document > Deploy workflow.
 
