@@ -50,7 +50,17 @@ The blog posts by [ionel](https://blog.ionelmc.ro/2014/05/25/python-packaging/#t
 and [Jean-Paul Calderone](http://as.ynchrono.us/2007/12/filesystem-structure-of-python-project_21.html)
 outline the two main approaches that are prevalent in the Python community.
 ## Usage
-This repository provides the basic setup to enable a Setup> Test > Build > Document > Deploy workflow.
+This repository provides the basic setup to enable a Setup > Test > Build >
+Document > Deploy workflow.
+
+**Note to Windows users**
+Performance is not guaranteed when running this repository in Windows OS. I may
+look at supporting Windows and/or MAC OS if there is significant demand, however
+for now I have chosen the development path that in my opinion provides the least
+friction, i.e. Windows Subsystem for Linux.
+
+If you want to try running the Python code on this repository then just remember
+that the command to activate the virtual environment in Windows is `source env/Scripts/activate`, not `source env/bin/activate`.
 
 **Setup**
 ```python
