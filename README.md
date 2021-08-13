@@ -27,6 +27,28 @@ Table of Contents
 * [Python Packaging Authority sample repository](https://github.com/pypa/sampleproject) * [github/ionelmc/cookiecutter-pylibrary](https://github.com/ionelmc/cookiecutter-pylibrary)
 * [github/audreyfeldroy/cookiecutter-pypackage](https://github.com/audreyfeldroy/cookiecutter-pypackage)
 
+## Getting Started
+Start by [creating a fork of this repository](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
+and then cloning a local copy onto your machine.
+
+Once you have access to the code locally you are free to start developing your
+Python package.
+
+To get started and avoid any awkard name and/or path errors we suggest making the
+following changes first:
+
+* **Rename the repository directory** - Change the name of the repository directory where you have cloned the local copy into to something more descriptive and representative of your project. e.g. `my_awesome_python_project` not, `python_package_template`
+* **Change the name of tha package directory** - Change the name of the top-level Python package directory which is currently at `src/python_package_template`. Best practice is to name this directory after your package name, e.g. `src/my_awesome_python_project`.
+* **Change all instance of `python_package_template`** In order for CI to run correctly you now need to change all mentions of `python_package_template` and replace this with your chosen package name. This includes modifying metadata (e.g. in `setup.py` and `setup.cfg`) and making sure all paths are correctly defined.
+    * If you are using VS Code you can use the search functionality with `Ctrl + Shift + F` and search for "python_package_template" to get all hits in the directory and subdirectories.
+    * **TODO** - Add shell command to automate this
+
+### A Note on Directory Structure
+The directory structure for Python projects seems to be a contentious issue.
+
+The blog posts by [ionel](https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure)
+and [Jean-Paul Calderone](http://as.ynchrono.us/2007/12/filesystem-structure-of-python-project_21.html)
+outline the two main approaches that are prevalent in the Python community.
 ## Usage
 This repository provides the basic setup to enable a Setup> Test > Build > Document > Deploy workflow.
 
