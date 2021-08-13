@@ -4,11 +4,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-| Parameter    | Value        |
-| :---         | :----:       |
-| OS           | Linux/WSL 2 |
-| Python       | > 3.8        |
-| Build system | `setuptools` |
+| Feature        | Option       |
+| :---           | :----:       |
+| OS             | Linux/WSL 2  |
+| IDE            | VS Code      |
+| Python         | >=3.8        |
+| Env Management | `venv`       |
+| Testing        | `pytest`     |
+| Build system   | `setuptools` |
+| Documentation  | `sphinx`     |
+| CI             | CircleCI     |
 
 Provides a minimal template for a Python package repository.
 
@@ -28,7 +33,6 @@ Table of Contents
 * [Python Packaging Authority sample repository](https://github.com/pypa/sampleproject)
 * [github/ionelmc/cookiecutter-pylibrary](https://github.com/ionelmc/cookiecutter-pylibrary)
 * [github/audreyfeldroy/cookiecutter-pypackage](https://github.com/audreyfeldroy/cookiecutter-pypackage)
-
 ## Getting Started
 Start by [creating a fork of this repository](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 and then cloning a local copy onto your machine.
