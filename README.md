@@ -24,7 +24,8 @@ Table of Contents
 * [Authors](#authors)
 
 **Other Python package templates**
-* [Python Packaging Authority sample repository](https://github.com/pypa/sampleproject) * [github/ionelmc/cookiecutter-pylibrary](https://github.com/ionelmc/cookiecutter-pylibrary)
+* [Python Packaging Authority sample repository](https://github.com/pypa/sampleproject)
+* [github/ionelmc/cookiecutter-pylibrary](https://github.com/ionelmc/cookiecutter-pylibrary)
 * [github/audreyfeldroy/cookiecutter-pypackage](https://github.com/audreyfeldroy/cookiecutter-pypackage)
 
 ## Getting Started
@@ -111,8 +112,12 @@ sphinx-build -b html docs/source docs/build
 circleci local execute -c .circleci/config.yml --job setup-env
 ```
 
+## Workflow
+The following sections are representative of an example developer workflow that
+uses WSL and VS Code as the IDE.
 
-## Setup
+This is by no means prescriptive and is for guidance only.
+### Setup
 This package uses `venv` to manage dependencies.
 
 Create a virtual environment called `env`
@@ -131,7 +136,7 @@ To install the package dependencies
 
     python3 -m pip install -r requirements.txt
 
-### Developer Tools
+#### Developer Tools
 This repository uses the following developer tools:
 
 * [pre-commit](https://pre-commit.com/): `pre-commit` is provided as a developer dependency. To install pre-commit use `pre-commit install` and then run on all files using `pre-commit run --all-files`
@@ -159,7 +164,7 @@ An example `settings.json` for VS Code is provided below:
 }
 ```
 
-## Test
+### Test
 Testing is provided by `pytest` and test files are defined in the `tests` directory.
 
 To run all tests
@@ -168,7 +173,7 @@ To run all tests
 
 The pytest setup can be heavily customised. See the [pytest docs](https://docs.pytest.org/en/6.2.x/example/index.html) for more information.
 
-## Build
+### Build
 Packaging is provided by `setuptools`.
 
 To build the source (`.tar.gz`) and distribution (`.whl`) archives
@@ -189,7 +194,7 @@ python3 -m pip install path_to_the_distribution_archive.whl
 
 The [setuptools documentation](https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project) provides details on the differences between the source and distribution archives.
 
-## Document
+### Document
 Documentation is provided by [Sphinx](https://www.sphinx-doc.org/en/master/usage/quickstart.html).
 
 To create the documentation for the Python package automatically we use the
@@ -213,13 +218,13 @@ The HTML version of the documentation can be built using
 This will create several html files in the `docs/build` directory. To view the
 docs in a web browser simply open the `docs/build/index.html` file.
 
-## Deploy
+### Deploy
 In this repository, "deploy" is a term used to loosely describe the act of
 hosting the code remotely on GitHub, running Continuous Integration (CI),
 monitoring code health and versioning the code.
 
 For more information of CI/CD checkout the [CI/CD Checklist and associated sources](https://github.com/users/ChristopherSzczyglowski/projects/1).
-### Continuous Integration
+#### Continuous Integration
 This repository uses CircleCI to provide continuous integration.
 
 The following jobs are defined in the [CircleCI config file](./.circleci/config.yml):
@@ -247,10 +252,10 @@ The following resources will assist first time installation for Docker and Circl
     * [Getting Started with the CircleCI CLI](https://circleci.com/docs/2.0/local-cli-getting-started/)
     * [Using the CircleCI Local CLI](https://circleci.com/docs/2.0/local-cli/)
 
-### Code Metrics
+#### Code Metrics
 Code health is monitored using [CodeCov](https://about.codecov.io/) and the settings can be found in the [CodeCov configuration file](./codecov.yml).
 
-### Versioning
+#### Versioning
 This repository uses [versioneer](https://github.com/python-versioneer/python-versioneer) for
 versioning and adheres to the [Semantic Versioning style](https://semver.org/).
 
@@ -261,7 +266,7 @@ Specific instructions on how to set up `versioneer` can be found in
 [INSTALL.md](https://github.com/python-versioneer/python-versioneer/blob/master/INSTALL.md)
 on the versioneer GitHub.
 
-#### Security Warning
+##### Security Warning
 Using `versioneer` introduces some low severity security vulnerabilities in the
 codebase as reported by `bandit`, namely
 [B101](https://bandit.readthedocs.io/en/latest/plugins/b101_assert_used.html),
@@ -278,7 +283,7 @@ during development. This decision is effectively a decision to trust the
 developers of `versioneer` that they are not acting maliciously. If you disagree
 with these changes feel free to revert the changes made in these files.
 
-### GitHub Actions
+#### GitHub Actions
 
 [TODO - Read up on this for automatic versioning](https://eridem.net/version-bumping-changelog-script-tips-for-your-ci-cd-pipelines)
 
