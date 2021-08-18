@@ -3,17 +3,71 @@
 [![codecov](https://codecov.io/gh/ChristopherSzczyglowski/python_package_template/branch/main/graph/badge.svg?token=4MDXVLL47F)](https://codecov.io/gh/ChristopherSzczyglowski/python_package_template)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-| Parameter    | Value        |
-| :---         | :----:       |
-| OS           | Linux/WSL 2 |
-| Python       | > 3.8        |
-| Build system | `setuptools` |
+| Feature        | Option       |
+| :---           | :----:       |
+| OS             | Linux/WSL 2  |
+| IDE            | VS Code      |
+| Python         | >=3.8        |
+| Env Management | `venv`       |
+| Testing        | `pytest`     |
+| Build system   | `setuptools` |
+| Documentation  | `sphinx`     |
+| CI             | CircleCI     |
 
 Provides a minimal template for a Python package repository.
 
+Table of Contents
+* [Getting Started](#getting-started)
+* [Usage](#usage)
+* [Workflow](#workflow)
+    * [Setup](#setup)
+    * [Test](#test)
+    * [Build](#build)
+    * [Document](#document)
+    * [Deploy](#deploy)
+* [License](#license)
+* [Authors](#authors)
+
+**Other Python package templates**
+* [Python Packaging Authority sample repository](https://github.com/pypa/sampleproject)
+* [github/ionelmc/cookiecutter-pylibrary](https://github.com/ionelmc/cookiecutter-pylibrary)
+* [github/audreyfeldroy/cookiecutter-pypackage](https://github.com/audreyfeldroy/cookiecutter-pypackage)
+## Getting Started
+Start by [creating a fork of this repository](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
+and then cloning a local copy onto your machine.
+
+Once you have access to the code locally you are free to start developing your
+Python package.
+
+To get started and avoid any awkard name and/or path errors we suggest making the
+following changes first:
+
+* **Rename the repository directory** - Change the name of the repository directory where you have cloned the local copy into to something more descriptive and representative of your project. e.g. `my_awesome_python_project` not, `python_package_template`
+* **Change the name of the package directory** - Change the name of the top-level Python package directory which is currently at `src/python_package_template`. Best practice is to name this directory after your package name, e.g. `src/my_awesome_python_project`.
+* **Change all instance of `python_package_template`** In order for CI to run correctly you now need to change all mentions of `python_package_template` and replace this with your chosen package name. This includes modifying metadata (e.g. in `setup.py` and `setup.cfg`) and making sure all paths are correctly defined.
+    * If you are using VS Code you can use the search functionality with `Ctrl + Shift + F` and search for "python_package_template" to get all hits in the directory and subdirectories.
+    * **TODO** - Add shell command to automate this
+
+### A Note on Directory Structure
+The directory structure for Python projects seems to be a contentious issue.
+
+The blog posts by [ionel](https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure)
+and [Jean-Paul Calderone](http://as.ynchrono.us/2007/12/filesystem-structure-of-python-project_21.html)
+outline the two main approaches that are prevalent in the Python community.
 ## Usage
-This repository provides the basic setup to enable a Setup> Test > Build > Document > Deploy workflow.
+This repository provides the basic setup to enable a Setup > Test > Build >
+Document > Deploy workflow.
+
+**Note to Windows users**
+Performance is not guaranteed when running this repository in Windows OS. I may
+look at supporting Windows and/or MAC OS if there is significant demand, however
+for now I have chosen the development path that in my opinion provides the least
+friction, i.e. Windows Subsystem for Linux.
+
+If you want to try running the Python code on this repository then just remember
+that the command to activate the virtual environment in Windows is `source env/Scripts/activate`, not `source env/bin/activate`.
 
 **Setup**
 ```python
@@ -64,8 +118,12 @@ sphinx-build -b html docs/source docs/build
 circleci local execute -c .circleci/config.yml --job setup-env
 ```
 
+## Workflow
+The following sections are representative of an example developer workflow that
+uses WSL and VS Code as the IDE.
 
-## Setup
+This is by no means prescriptive and is for guidance only.
+### Setup
 This package uses `venv` to manage dependencies.
 
 Create a virtual environment called `env`
@@ -84,11 +142,11 @@ To install the package dependencies
 
     python3 -m pip install -r requirements.txt
 
-### Developer Tools
+#### Developer Tools
 This repository uses the following developer tools:
 
 * [pre-commit](https://pre-commit.com/): `pre-commit` is provided as a developer dependency. To install pre-commit use `pre-commit install` and then run on all files using `pre-commit run --all-files`
-* [CircleCI](): Continuous Integration is provided by CircleCI. The [CircleCI CLI](https://circleci.com/docs/2.0/local-cli/) can be used to debug CI jobs locally.
+* [CircleCI](https://circleci.com/): Continuous Integration is provided by CircleCI. The [CircleCI CLI](https://circleci.com/docs/2.0/local-cli/) can be used to debug CI jobs locally.
 * [pylint](https://pypi.org/project/pylint/): Linting is provided by `pylint`
 * [mypy](https://pypi.org/project/mypy/): Static type checking is provided by `mypy`
 * [bandit](https://pypi.org/project/bandit/): Code security is provided by `bandit`
@@ -112,7 +170,7 @@ An example `settings.json` for VS Code is provided below:
 }
 ```
 
-## Test
+### Test
 Testing is provided by `pytest` and test files are defined in the `tests` directory.
 
 To run all tests
@@ -121,7 +179,7 @@ To run all tests
 
 The pytest setup can be heavily customised. See the [pytest docs](https://docs.pytest.org/en/6.2.x/example/index.html) for more information.
 
-## Build
+### Build
 Packaging is provided by `setuptools`.
 
 To build the source (`.tar.gz`) and distribution (`.whl`) archives
@@ -142,7 +200,7 @@ python3 -m pip install path_to_the_distribution_archive.whl
 
 The [setuptools documentation](https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project) provides details on the differences between the source and distribution archives.
 
-## Document
+### Document
 Documentation is provided by [Sphinx](https://www.sphinx-doc.org/en/master/usage/quickstart.html).
 
 To create the documentation for the Python package automatically we use the
@@ -166,12 +224,13 @@ The HTML version of the documentation can be built using
 This will create several html files in the `docs/build` directory. To view the
 docs in a web browser simply open the `docs/build/index.html` file.
 
-## Deploy
-Deployment is a term used loosely to describe the act of hosting the code remotely on
-GitHub, running Continuous Integration (CI), monitoring code health and versioning the code.
+### Deploy
+In this repository, "deploy" is a term used to loosely describe the act of
+hosting the code remotely on GitHub, running Continuous Integration (CI),
+monitoring code health and versioning the code.
 
 For more information of CI/CD checkout the [CI/CD Checklist and associated sources](https://github.com/users/ChristopherSzczyglowski/projects/1).
-### Continuous Integration
+#### Continuous Integration
 This repository uses CircleCI to provide continuous integration.
 
 The following jobs are defined in the [CircleCI config file](./.circleci/config.yml):
@@ -199,10 +258,10 @@ The following resources will assist first time installation for Docker and Circl
     * [Getting Started with the CircleCI CLI](https://circleci.com/docs/2.0/local-cli-getting-started/)
     * [Using the CircleCI Local CLI](https://circleci.com/docs/2.0/local-cli/)
 
-### Code Metrics
+#### Code Metrics
 Code health is monitored using [CodeCov](https://about.codecov.io/) and the settings can be found in the [CodeCov configuration file](./codecov.yml).
 
-### Versioning
+#### Versioning
 This repository uses [versioneer](https://github.com/python-versioneer/python-versioneer) for
 versioning and adheres to the [Semantic Versioning style](https://semver.org/).
 
@@ -213,7 +272,7 @@ Specific instructions on how to set up `versioneer` can be found in
 [INSTALL.md](https://github.com/python-versioneer/python-versioneer/blob/master/INSTALL.md)
 on the versioneer GitHub.
 
-#### Security Warning
+##### Security Warning
 Using `versioneer` introduces some low severity security vulnerabilities in the
 codebase as reported by `bandit`, namely
 [B101](https://bandit.readthedocs.io/en/latest/plugins/b101_assert_used.html),
@@ -230,7 +289,7 @@ during development. This decision is effectively a decision to trust the
 developers of `versioneer` that they are not acting maliciously. If you disagree
 with these changes feel free to revert the changes made in these files.
 
-### GitHub Actions
+#### GitHub Actions
 
 [TODO - Read up on this for automatic versioning](https://eridem.net/version-bumping-changelog-script-tips-for-your-ci-cd-pipelines)
 
