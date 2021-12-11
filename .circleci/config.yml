@@ -144,7 +144,7 @@ jobs:
           name: run mypy
           command: |
             source env/bin/activate
-            mypy --config-file .mypy .
+            mypy .
   unit-tests:
     # Runs the test framework
     docker:
