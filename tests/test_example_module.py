@@ -1,6 +1,6 @@
 """Test suite for the `example_module` module
 """
-from typing import NewType, Union
+from typing import Union
 import pytest
 
 from . import context  # pylint: disable=unused-import

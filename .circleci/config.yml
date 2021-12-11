@@ -139,7 +139,7 @@ jobs:
           name: run pylint
           command: |
             source env/bin/activate
-            pylint --rcfile=.pylintrc src tests
+            pylint src tests
       - run:
           name: run mypy
           command: |
