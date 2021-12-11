@@ -5,7 +5,7 @@
 # import logging
 
 
-def cli():
+def cli() -> None:
     """Entry point for the command line interface"""
 
     print("This is the command line interface")
