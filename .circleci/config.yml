@@ -180,8 +180,8 @@ jobs:
           command: |
             source env/bin/activate
             mkdir reports/coverage --parents
-            python3 -m pytest tests
-            python3 -m pytest --cov=python_package_template --junitxml=reports/coverage/test_summary.xml tests -rxXs
+            python3 -m pytest
+            python3 -m pytest --cov=python_package_template --junitxml=reports/coverage/test_summary.xml -rxXs
             coverage xml -o reports/coverage/test_coverage.xml
       - store_test_results:
           # Store the auto-generated reports for further analysis (if required)

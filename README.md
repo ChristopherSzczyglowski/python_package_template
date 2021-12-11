@@ -85,8 +85,8 @@ python3 -m pip install -r requirements-dev.txt
 # Make sure we are in the virtual environment
 source env/bin/activate
 
-# Run all tests usuing the `pytest` package
-python3 -m pytest tests
+# Run all tests using the `pytest` package
+python3 -m pytest
 ```
 
 **Build**
@@ -175,7 +175,7 @@ Testing is provided by `pytest` and test files are defined in the `tests` direct
 
 To run all tests
 
-    python3 -m pytest tests
+    python3 -m pytest
 
 The pytest setup can be heavily customised. See the [pytest docs](https://docs.pytest.org/en/6.2.x/example/index.html) for more information.
 
