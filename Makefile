@@ -82,6 +82,25 @@ typecheck: ## Run static type checking on the application code
 
 format: lint typecheck ## Run linting and type-checking
 
+# Run `bandit` on the repository
+#
+# Additional args:
+# * -r:
+#   Recurse over the directory contents
+# * -x:
+#   Exclude the `./env` directory
+# * -s:
+#   Skip the B101 tests (assert_used)
+security-application: ## Checks for vulnerabilities in application code
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
+	bandit -r -x ./env -s B101 .
+
+security-dependency: ## Checks for vulnerabilities in dependencies
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
+	pip freeze | safety check --stdin
+
+security: security-application security-dependency ## Runs security tools
+
 pre-commit-install: ## Install pre-commit
 	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
 	pre-commit install

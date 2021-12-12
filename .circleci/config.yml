@@ -196,15 +196,11 @@ jobs:
           #   Exclude the `./env` directory
           # * -s:
           #   Skip the B101 tests (assert_used)
-          command: |
-            source env/bin/activate
-            bandit -r -x ./env -s B101 .
+          command: make security-application
       - run:
           name: run safety
           # Run `safety` on the current environment
-          command: |
-            source env/bin/activate
-            pip freeze | safety check --stdin
+          command: make security-dependency
   build-dist:
     # Creates the source and built distribution archives
     docker:
