@@ -60,6 +60,9 @@ outline the two main approaches that are prevalent in the Python community.
 This repository provides the basic setup to enable a Setup > Test > Build >
 Document > Deploy workflow.
 
+These operations are supported via a `Makefile`. To view available Make recipes
+you can type `make` in the command prompt and view the documentation.
+
 **Note to Windows users**
 Performance is not guaranteed when running this repository in Windows OS. I may
 look at supporting Windows and/or MAC OS if there is significant demand, however
@@ -67,49 +70,29 @@ for now I have chosen the development path that in my opinion provides the least
 friction, i.e. Windows Subsystem for Linux.
 
 If you want to try running the Python code on this repository then just remember
-that the command to activate the virtual environment in Windows is `source env/Scripts/activate`, not `source env/bin/activate`.
+that the command to activate the virtual environment in Windows is
+`source env/Scripts/activate`, not `source env/bin/activate`.
+
+_This will need to be changed in the `Makefile` aswell_
 
 **Setup**
-```python
-# Create and activate the environment
-python3 -m venv env
-source env/bin/activate
-
-# Install dependencies
-python3 -m pip install -r requirements.txt
-python3 -m pip install -r requirements-dev.txt
+```bash
+make install
 ```
 
 **Test**
-```python
-# Make sure we are in the virtual environment
-source env/bin/activate
-
-# Run all tests using the `pytest` package
-python3 -m pytest
+```bash
+make test
 ```
 
 **Build**
-```python
-# Make sure we are in the virtual environment
-source env/bin/activate
-
-# Build using `setuptools`
-python3 setup.py sdist bdist_wheel
+```bash
+make build-dist
 ```
 
 **Document**
 ```bash
-# Make sure we are in the virtual environment
-source env/bin/activate
-
-# Auto-document the Python package
-#   - Creates the `modules.rst` file in `docs/source`
-sphinx-apidoc -f -o docs/source src/python_package_template
-
-# Build the HTML version of the documentation
-sphinx-build -b html docs/source docs/build
-
+make build-docs
 ```
 
 **Deploy**
@@ -126,21 +109,7 @@ This is by no means prescriptive and is for guidance only.
 ### Setup
 This package uses `venv` to manage dependencies.
 
-Create a virtual environment called `env`
-
-    python3 -m venv env
-
-Activate the environment
-
-    source env/bin/activate
-
-To install the developer dependencies
-
-    python3 -m pip install -r requirements-dev.txt
-
-To install the package dependencies
-
-    python3 -m pip install -r requirements.txt
+See `make create-env` and `make install-python-deps` to view the details.
 
 #### Developer Tools
 This repository uses the following developer tools:
@@ -171,22 +140,25 @@ An example `settings.json` for VS Code is provided below:
 ```
 
 ### Test
-Testing is provided by `pytest` and test files are defined in the `tests` directory.
+Testing is provided by `pytest` and test files are defined in the `tests`
+directory.
 
-To run all tests
+Test discovery supports tests written using Behaviour Driven Development syntax,
+e.g. `def should_pass_this_really_simply_test(arg_1, arg_2, expected)`
 
-    python3 -m pytest
-
-The pytest setup can be heavily customised. See the [pytest docs](https://docs.pytest.org/en/6.2.x/example/index.html) for more information.
+See `make test` and `make test-coverage` to view the details and the
+[pytest docs](https://docs.pytest.org/en/6.2.x/example/index.html) for more
+information.
 
 ### Build
 Packaging is provided by `setuptools`.
 
 To build the source (`.tar.gz`) and distribution (`.whl`) archives
 
-    python3 setup.py sdist bdist_wheel
+    make build-dist
 
-This will create the source (`.tar.gz`) and distribution (`.whl`) archives in the `dist` directory.
+This will create the source (`.tar.gz`) and distribution (`.whl`) archives in
+the `dist` directory.
 
 The package can be installed from these archives using
 ```bash
@@ -198,15 +170,14 @@ python3 -m pip install path_to_the_source_archive.tar.gz
 python3 -m pip install path_to_the_distribution_archive.whl
 ```
 
-The [setuptools documentation](https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project) provides details on the differences between the source and distribution archives.
+The [setuptools documentation](https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project) provides details on the differences between the source
+and distribution archives.
 
 ### Document
 Documentation is provided by [Sphinx](https://www.sphinx-doc.org/en/master/usage/quickstart.html).
 
 To create the documentation for the Python package automatically we use the
 [sphinx-autodoc](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#module-sphinx.ext.autodoc) extension
-
-    sphinx-apidoc -f -o docs/source src/python_package_template
 
 This allows Sphinx to automatically traverse the contents of the python package
 found at `src/python_package_template` and construct the ReStructuredText `.rst` file
@@ -219,7 +190,7 @@ over the `numpy` style but this is purely a matter of personal taste.
 
 The HTML version of the documentation can be built using
 
-    sphinx-build -b html docs/source docs/build
+    make build-docs
 
 This will create several html files in the `docs/build` directory. To view the
 docs in a web browser simply open the `docs/build/index.html` file.
@@ -243,13 +214,17 @@ The following jobs are defined in the [CircleCI config file](./.circleci/config.
 * `build-dist`: Builds the distribution files and stores the artifacts
 * `build-docs`: Builds the documentation and stores the artifacts
 
-We use the [fan-out/fan-in workflow](https://circleci.com/docs/2.0/workflows/#fan-outfan-in-workflow-example) strategy to maximise concurrency.
+We use the [fan-out/fan-in workflow](https://circleci.com/docs/2.0/workflows/#fan-outfan-in-workflow-example)
+strategy to maximise concurrency.
 
 ![CircleCI workflow diagram for python_package_template repository](https://github.com/ChristopherSzczyglowski/python_package_template/blob/main/docs/source/_static/circleci_workflow_diagram.PNG?raw=true)
 
-The CI jobs `setup-env` and `pre-commit` can be tested locally using the the CircleCI CLI (requires Docker). The other jobs use caching to persist the dependency data between jobs, which is currently unsupported by the CircleCI CLI.
+The CI jobs `setup-env` and `pre-commit` can be tested locally using the the
+CircleCI CLI (requires Docker). The other jobs use caching to persist the
+dependency data between jobs, which is currently unsupported by the CircleCI CLI.
 
-The following resources will assist first time installation for Docker and CircleCI CLI:
+The following resources will assist first time installation for Docker and
+CircleCI CLI:
 
 * Docker
     * [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
@@ -280,8 +255,9 @@ codebase as reported by `bandit`, namely
 and [B603](https://bandit.readthedocs.io/en/latest/plugins/b603_subprocess_without_shell_equals_true.html).
 
 In order for security checks to pass in CI we have explicitly ignored the warnings
-from bandit for the files `versioneer.py` and `src/python_package_template/_version.py` using
-the `# nosec` annotation. We have also updated the `.bandit` config file to ignore assert statements in these files.
+from bandit for the files `versioneer.py` and `src/python_package_template/_version.py`
+using the `# nosec` annotation. We have also updated the `.bandit` config file
+to ignore assert statements in these files.
 
 We favour a targetted approach over a blanket skipping of these tests so that we
 can still expose security vulnerabilities related to these errors downstream
