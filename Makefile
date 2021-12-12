@@ -82,14 +82,17 @@ typecheck: ## Run static type checking on the application code
 
 format: lint typecheck ## Run linting and type-checking
 
-pre-commit-install: activate-env ## Install pre-commit
+pre-commit-install: ## Install pre-commit
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
 	pre-commit install
 
-pre-commit: activate-env ## Run pre-commit on staged files
-	@pre-commit run
+pre-commit: ## Run pre-commit on staged files
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
+	pre-commit run
 
-pre-commit-all: activate-env ## Run pre-commit on all files
-	@pre-commit run --all-files
+pre-commit-all: ## Run pre-commit on all files
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
+	pre-commit run --all-files
 
 # TODO - Something like this would be better
 # FILES_TO_CLEAN = (test_summary.xml test_coverage.xml .coverage)
