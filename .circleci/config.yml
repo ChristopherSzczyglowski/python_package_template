@@ -137,9 +137,7 @@ jobs:
       - restore_all_dependency_cache
       - run:
           name: run pylint
-          command: |
-            source env/bin/activate
-            pylint src tests
+          command: make lint
       - run:
           name: run mypy
           command: |
