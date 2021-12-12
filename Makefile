@@ -1,7 +1,6 @@
 TASKS = \
 	help \
 	create-env \
-	active-env \
 	install-python-deps \
 	install \
 	test \
@@ -39,11 +38,9 @@ help:
 create-env: ## Creates the virtual environment directory
 	@python3 -m venv $(VIRTUAL_ENV_DIRECTORY)
 
-activate-env: ## Activates the virtual environment
-	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate
-
-install-python-deps: create-env activate-env ## Install the Python dependencies in the virtual environment
-	@python3 -m pip install -r requirements.txt -r requirements-dev.txt
+install-python-deps: create-env ## Creat the virtual environment and install the Python dependencies
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
+	python3 -m pip install -r requirements.txt -r requirements-dev.txt
 
 # TODO - This is crying out for Docker...
 install: install-python-deps pre-commit-install ## Install the code and pre-commit
