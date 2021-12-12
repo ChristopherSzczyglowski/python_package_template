@@ -1,11 +1,11 @@
 """Test suite for the `example_module` module
 """
 from typing import Union
+
 import pytest
 
-from . import context  # pylint: disable=unused-import
-
-from python_package_template import example_module  # pylint: disable=wrong-import-order
+import tests.context  # pylint: disable=unused-import
+from python_package_template import example_module
 
 Number = Union[int, float]
 

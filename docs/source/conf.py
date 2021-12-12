@@ -4,9 +4,10 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+import pathlib
+
 # -- Path setup --------------------------------------------------------------
 import sys
-import pathlib
 
 # We need to make sure that Sphinx can import the Python package
 package_path = pathlib.Path(__file__).parents[2] / "src"
