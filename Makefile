@@ -52,7 +52,7 @@ install: install-python-deps pre-commit-install ## Install the code and pre-comm
 #  * -rxXs
 #     Provide a detailed summary report.
 #     https://docs.pytest.org/en/6.2.x/usage.html#detailed-summary-report
-test: activate-env ## Run the full test suite
+test: ## Run the full test suite
 	@$(PYTHON) -m pytest -rxXs
 
 # Run the test suite with the following options:
