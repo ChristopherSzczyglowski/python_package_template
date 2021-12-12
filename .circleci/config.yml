@@ -211,7 +211,7 @@ jobs:
       - restore_all_dependency_cache
       - run:
           name: build distribution archives
-          command: make buid-dist
+          command: make build-dist
       - store_artifacts:
           # Store the build artifacts
           path: dist
@@ -241,7 +241,7 @@ jobs:
             # Additional args for `sphinx-build`
             #   * -b:
             #     The type of documentation to create
-          command: make docs-build
+          command: make build-docs
       - run:
           name: compress artifacts
           # We compress the artifacts to improve speed and allow all docs to be
