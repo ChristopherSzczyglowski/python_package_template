@@ -69,7 +69,8 @@ test: activate-env ## Run the full test suite
 #  * --cov-report xml:test_coverage.xml
 #     Requests an XML-formatted coverage report named test_coverage.xml
 test-coverage: ## Run the full test suite and generate coverage reports
-	@mkdir reports/coverage --parents && \
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
+	mkdir reports/coverage --parents && \
 	$(PYTHON) -m pytest -rxXs \
 	--cov=$(APPLICATION_DIR) \
 	--junitxml=test_summary.xml \
