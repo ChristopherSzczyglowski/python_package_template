@@ -118,7 +118,7 @@ jobs:
           key: all-deps-{{ checksum "requirements-all.txt"}}
       - run:
           name: install dependencies
-          command: make install
+          command: make install-python-deps
       - save_cache:
           key: all-deps-{{ checksum "requirements-all.txt"}}
           paths:
