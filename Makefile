@@ -20,14 +20,15 @@ TASKS = \
 # .DEFAULT_GOAL is the target that is executed when 'make' is typed
 .DEFAULT_GOAL = help
 
-PYTHON = python3
-
 # Location of application and test code
 APPLICATION_DIR = src/python_package_template/
 TEST_DIR = tests/
 
 # Name of the virtual environment directory
 VIRTUAL_ENV_DIRECTORY = env
+
+# Location of the python executable
+PYTHON = $(VIRTUAL_ENV_DIRECTORY)/bin/python3
 
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help:
@@ -36,13 +37,13 @@ help:
 	awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 create-env: ## Creates the virtual environment directory
-	@$(PYTHON) -m venv $(VIRTUAL_ENV_DIRECTORY)
+	@python3 -m venv $(VIRTUAL_ENV_DIRECTORY)
 
 activate-env: ## Activates the virtual environment
 	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate
 
 install-python-deps: create-env activate-env ## Install the Python dependencies in the virtual environment
-	@$(PYTHON) -m pip install -r requirements.txt -r requirements-dev.txt
+	@python3 -m pip install -r requirements.txt -r requirements-dev.txt
 
 # TODO - This is crying out for Docker...
 install: install-python-deps pre-commit-install ## Install the code and pre-commit
@@ -73,7 +74,7 @@ test-coverage: activate-env ## Run the full test suite and generate coverage rep
 	--junitxml=test_summary.xml \
 	--cov-report xml:test_coverage.xml
 
-lint: activate-env ## Run linting tools on the application code
+lint: ## Run linting tools on the application code
 	@$(PYTHON) -m pylint $(APPLICATION_DIR) $(TEST_DIR)
 
 typecheck: activate-env ## Run static type checking on the application code
