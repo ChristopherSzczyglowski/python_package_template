@@ -1,3 +1,4 @@
-exclude_dirs : ['env', '.vscode']
+[bandit]
+exclude_dirs : ['./env', './.vscode']
 assert_used:
-  skips: ['*/test_*.py', './versioneer.py', './src/python_package_template/_version.py']
+  skips: ['*/should_*.py', '*/test_*.py', './versioneer.py', './src/python_package_template/_version.py']
