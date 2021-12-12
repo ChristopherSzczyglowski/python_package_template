@@ -68,11 +68,13 @@ test: activate-env ## Run the full test suite
 #
 #  * --cov-report xml:test_coverage.xml
 #     Requests an XML-formatted coverage report named test_coverage.xml
-test-coverage: activate-env ## Run the full test suite and generate coverage reports
-	@$(PYTHON) -m pytest -rxXs \
+test-coverage: ## Run the full test suite and generate coverage reports
+	@mkdir reports/coverage --parents && \
+	$(PYTHON) -m pytest -rxXs \
 	--cov=$(APPLICATION_DIR) \
 	--junitxml=test_summary.xml \
-	--cov-report xml:test_coverage.xml
+	--cov-report xml:test_coverage.xml && \
+	coverage xml -o reports/coverage/test_coverage.xml
 
 lint: ## Run linting tools on the application code
 	@$(PYTHON) -m pylint $(APPLICATION_DIR) $(TEST_DIR)
