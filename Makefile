@@ -67,16 +67,16 @@ test: activate-env ## Run the full test suite
 #
 #  * --cov-report xml:test_coverage.xml
 #     Requests an XML-formatted coverage report named test_coverage.xml
-test-coverage: ## Run the full test suite and generate coverage reports
+test-coverage: activate-env ## Run the full test suite and generate coverage reports
 	@$(PYTHON) -m pytest -rxXs \
 	--cov=$(APPLICATION_DIR) \
 	--junitxml=test_summary.xml \
 	--cov-report xml:test_coverage.xml
 
-lint: ## Run linting tools on the application code
+lint: activate-env ## Run linting tools on the application code
 	@$(PYTHON) -m pylint $(APPLICATION_DIR) $(TEST_DIR)
 
-typecheck: ## Run static type checking on the application code
+typecheck: activate-env ## Run static type checking on the application code
 	@$(PYTHON) -m mypy . --strict
 
 format: lint typecheck ## Run linting and type-checking
