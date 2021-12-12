@@ -205,11 +205,13 @@ jobs:
           # Additional args:
           # * -r:
           #   Recurse over the directory contents
-          # * -c .bandit:
-          #   Use the configuration settings in `.bandit`
+          # * -x:
+          #   Exclude the `./env` directory
+          # * -s:
+          #   Skip the B101 tests (assert_used)
           command: |
             source env/bin/activate
-            bandit -r -c .bandit .
+            bandit -r -x ./env -s B101 .
       - run:
           name: run safety
           # Run `safety` on the current environment
