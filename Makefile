@@ -113,6 +113,11 @@ pre-commit-all: ## Run pre-commit on all files
 	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
 	pre-commit run --all-files
 
+build-dist: ## Build the distribution archives
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
+	python3 -m pip install wheel && \
+	python3 setup.py sdist bdist_wheel
+
 # TODO - Something like this would be better
 # FILES_TO_CLEAN = (test_summary.xml test_coverage.xml .coverage)
 # for file in ${FILES_TO_CLEAN[@]}; do
@@ -123,4 +128,6 @@ clean: ## Remove any artifacts created by the make targets
 	# if [[ -f test_summary.xml ]]; then rm test_summary.xml; fi && \
 	# if [[ -f test_coverage.xml ]]; then rm test_coverage.xml; fi && \
 	# if [[ -f .coverage ]]; then rm .coverage; fi && \
-	# if [[ reports ]]; then rm -rf reports; fi
+	# if [[ reports ]]; then rm -rf reports; fi && \
+	# if [[ build ]]; then rm -rf build; fi && \
+	# if [[ dist ]]; then rm -rf dist; fi

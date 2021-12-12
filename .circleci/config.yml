@@ -211,10 +211,7 @@ jobs:
       - restore_all_dependency_cache
       - run:
           name: build distribution archives
-          command: |
-            source env/bin/activate
-            python3 -m pip install wheel
-            python3 setup.py sdist bdist_wheel
+          command: make buid-dist
       - store_artifacts:
           # Store the build artifacts
           path: dist
