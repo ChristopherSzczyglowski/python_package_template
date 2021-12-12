@@ -118,6 +118,27 @@ build-dist: ## Build the distribution archives
 	python3 -m pip install wheel && \
 	python3 setup.py sdist bdist_wheel
 
+# Automatically builds the documentation
+#
+# Steps:
+#   - Build dynamic docmentation from the docstrings in the Python
+#     files and modules found in `src/python_package_template`
+#   - Build the static documentation files in `docs/source`
+#
+# Additional args for `sphinx-apidoc`:
+#   * -f:
+#     Force `apidoc` to overwrite files
+#   * -o:
+#     The target directory for the auto-generated docs
+#
+# Additional args for `sphinx-build`
+#   * -b:
+#     The type of documentation to create
+build-docs: ## Build the documentation
+	@. ./$(VIRTUAL_ENV_DIRECTORY)/bin/activate && \
+	sphinx-apidoc -f -o docs/source $(APPLICATION_DIR) && \
+	sphinx-build -b html docs/source docs/build
+
 # TODO - Something like this would be better
 # FILES_TO_CLEAN = (test_summary.xml test_coverage.xml .coverage)
 # for file in ${FILES_TO_CLEAN[@]}; do
@@ -130,4 +151,5 @@ clean: ## Remove any artifacts created by the make targets
 	# if [[ -f .coverage ]]; then rm .coverage; fi && \
 	# if [[ reports ]]; then rm -rf reports; fi && \
 	# if [[ build ]]; then rm -rf build; fi && \
-	# if [[ dist ]]; then rm -rf dist; fi
+	# if [[ dist ]]; then rm -rf dist; fi && \
+	# if [[ docs/build ]]; then rm -rf docs/build; fi

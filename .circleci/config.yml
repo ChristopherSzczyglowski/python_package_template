@@ -241,10 +241,7 @@ jobs:
             # Additional args for `sphinx-build`
             #   * -b:
             #     The type of documentation to create
-          command: |
-            source env/bin/activate
-            sphinx-apidoc -f -o docs/source src/python_package_template
-            sphinx-build -b html docs/source docs/build
+          command: make docs-build
       - run:
           name: compress artifacts
           # We compress the artifacts to improve speed and allow all docs to be
