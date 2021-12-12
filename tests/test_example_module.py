@@ -4,9 +4,8 @@ from typing import Union
 
 import pytest
 
-from python_package_template import example_module  # pylint: disable=wrong-import-order
-
-from . import context  # pylint: disable=unused-import
+import tests.context  # pylint: disable=unused-import
+from python_package_template import example_module
 
 Number = Union[int, float]
 
