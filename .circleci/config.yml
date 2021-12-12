@@ -140,9 +140,7 @@ jobs:
           command: make lint
       - run:
           name: run mypy
-          command: |
-            source env/bin/activate
-            mypy . --strict
+          command: make typecheck
   unit-tests:
     # Runs the test framework
     docker:

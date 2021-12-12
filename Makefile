@@ -77,7 +77,7 @@ test-coverage: activate-env ## Run the full test suite and generate coverage rep
 lint: ## Run linting tools on the application code
 	@$(PYTHON) -m pylint $(APPLICATION_DIR) $(TEST_DIR)
 
-typecheck: activate-env ## Run static type checking on the application code
+typecheck: ## Run static type checking on the application code
 	@$(PYTHON) -m mypy . --strict
 
 format: lint typecheck ## Run linting and type-checking
