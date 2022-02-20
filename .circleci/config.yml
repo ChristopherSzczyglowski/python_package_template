@@ -38,34 +38,40 @@ workflows:
     jobs:
       - pre-commit
       - setup-env:
+          context: dockerhub
           requires:
             - pre-commit
       - linting:
+          context: dockerhub
           requires:
             - setup-env
       - unit-tests:
+          context: dockerhub
           requires:
             - setup-env
       - security:
+          context: dockerhub
           requires:
             - setup-env
       - build-dist:
+          context: dockerhub
           requires:
             - linting
             - unit-tests
             - security
       - build-docs:
+          context: dockerhub
           requires:
-              - linting
-              - unit-tests
-              - security
+            - linting
+            - unit-tests
+            - security
 
 commands:
   restore_all_dependency_cache:
     steps:
       - restore_cache:
-        # Use a partial key match to pick up the cache created in `setup-env`
-        # - See: https://circleci.com/docs/2.0/caching/#writing-to-the-cache-in-workflows
+          # Use a partial key match to pick up the cache created in `setup-env`
+          # - See: https://circleci.com/docs/2.0/caching/#writing-to-the-cache-in-workflows
           key: all-deps-
 
 jobs:
@@ -102,7 +108,10 @@ jobs:
   setup-env:
     # Provides the environment to run the remaining jobs
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
@@ -118,7 +127,10 @@ jobs:
           key: all-deps-{{ checksum "requirements-all.txt"}}
       - run:
           name: install dependencies
-          command: make install-python-deps
+          command: |
+            python3 -m venv env
+            source env/bin/activate
+            python3 -m pip install -r requirements.txt -r requirements-dev.txt
       - save_cache:
           key: all-deps-{{ checksum "requirements-all.txt"}}
           paths:
@@ -126,7 +138,10 @@ jobs:
   linting:
     # Performs static checks on the code quality
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
@@ -140,7 +155,10 @@ jobs:
   unit-tests:
     # Runs the test framework
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
@@ -158,7 +176,10 @@ jobs:
   security:
     # Checks for vulnerabilities in the code and dependencies
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
@@ -172,7 +193,10 @@ jobs:
   build-dist:
     # Creates the source and built distribution archives
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
@@ -186,7 +210,10 @@ jobs:
   build-docs:
     # Creates the documentation
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
