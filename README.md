@@ -9,8 +9,8 @@
 | :---           | :----:       |
 | OS             | Linux/WSL 2  |
 | IDE            | VS Code      |
-| Python         | >=3.8        |
-| Env Management | `venv`       |
+| Python         | >=3.9        |
+| Env Management | `docker`     |
 | Testing        | `pytest`     |
 | Build system   | `setuptools` |
 | Documentation  | `sphinx`     |
@@ -38,11 +38,22 @@ Table of Contents
 Start by [creating a fork of this repository](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 and then cloning a local copy onto your machine.
 
-Once you have access to the code locally you are free to start developing your
-Python package.
+This package uses VS Code Developer Containers to handle the virtual environment
+and developer workflow.
 
-To get started and avoid any awkard name and/or path errors we suggest making the
-following changes first:
+* If you are using Windows or Mac, you will need to [install Docker Desktop](https://www.docker.com/products/docker-desktop)
+* If you are using Windows Subsystem for Linux you must [enable the WSL Integration in Docker Desktop](https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers)
+
+Next, install the [Remote Development Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
+
+Next time you open VS Code this extension will prompt you to reopen VS Code
+inside the developer container. IF you make changes to the `Dockerfile` or
+`.devcontainer.json` this operation can take some time as Docker will need to
+rebuild the image.
+
+Once you have access to the code locally you are almost ready to start
+developing your Python package. However, to avoid any awkard name and/or path
+errors we suggest making the following changes:
 
 * **Rename the repository directory** - Change the name of the repository directory where you have cloned the local copy into to something more descriptive and representative of your project. e.g. `my_awesome_python_project` not, `python_package_template`
 * **Change the name of the package directory** - Change the name of the top-level Python package directory which is currently at `src/python_package_template`. Best practice is to name this directory after your package name, e.g. `src/my_awesome_python_project`.
@@ -62,18 +73,6 @@ Document > Deploy workflow.
 
 These operations are supported via a `Makefile`. To view available Make recipes
 you can type `make` in the command prompt and view the documentation.
-
-**Note to Windows users**
-Performance is not guaranteed when running this repository in Windows OS. I may
-look at supporting Windows and/or MAC OS if there is significant demand, however
-for now I have chosen the development path that in my opinion provides the least
-friction, i.e. Windows Subsystem for Linux.
-
-If you want to try running the Python code on this repository then just remember
-that the command to activate the virtual environment in Windows is
-`source env/Scripts/activate`, not `source env/bin/activate`.
-
-_This will need to be changed in the `Makefile` aswell_
 
 **Setup**
 ```bash
@@ -121,23 +120,7 @@ This repository uses the following developer tools:
 * [bandit](https://pypi.org/project/bandit/): Code security is provided by `bandit`
 * [safety](https://pypi.org/project/safety/): `safety` is used to scan dependencies for vulnerabilities.
 
-An example `settings.json` for VS Code is provided below:
-```
-{
-    "python.pythonPath": "./env/bin/python3.9",
-    "editor.formatOnSave": true,
-    "python.formatting.provider": "black",
-    "python.linting.enabled": true,
-    "python.linting.lintOnSave": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.pylintArgs": [
-        "--enable=E,F,C,R,W"
-    ],
-    "python.linting.mypyEnabled": true,
-    "python.linting.banditEnabled": true,
-    "python.testing.pytestEnabled": true,
-}
-```
+Example settings are provided in the `.devcontainer.json`.
 
 ### Test
 Testing is provided by `pytest` and test files are defined in the `tests`
