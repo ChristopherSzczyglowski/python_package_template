@@ -24,6 +24,6 @@ setup(
             "entry-point = python_package_template.scripts.main:cli",
         ],
     },
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    version=versioneer.get_version(),  # type: ignore
+    cmdclass=versioneer.get_cmdclass(),  # type: ignore
 )

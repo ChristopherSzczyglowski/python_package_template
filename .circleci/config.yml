@@ -38,34 +38,40 @@ workflows:
     jobs:
       - pre-commit
       - setup-env:
+          context: dockerhub
           requires:
             - pre-commit
       - linting:
+          context: dockerhub
           requires:
             - setup-env
       - unit-tests:
+          context: dockerhub
           requires:
             - setup-env
       - security:
+          context: dockerhub
           requires:
             - setup-env
       - build-dist:
+          context: dockerhub
           requires:
             - linting
             - unit-tests
             - security
       - build-docs:
+          context: dockerhub
           requires:
-              - linting
-              - unit-tests
-              - security
+            - linting
+            - unit-tests
+            - security
 
 commands:
   restore_all_dependency_cache:
     steps:
       - restore_cache:
-        # Use a partial key match to pick up the cache created in `setup-env`
-        # - See: https://circleci.com/docs/2.0/caching/#writing-to-the-cache-in-workflows
+          # Use a partial key match to pick up the cache created in `setup-env`
+          # - See: https://circleci.com/docs/2.0/caching/#writing-to-the-cache-in-workflows
           key: all-deps-
 
 jobs:
@@ -102,7 +108,10 @@ jobs:
   setup-env:
     # Provides the environment to run the remaining jobs
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
@@ -121,8 +130,7 @@ jobs:
           command: |
             python3 -m venv env
             source env/bin/activate
-            python3 -m pip install -r requirements.txt
-            python3 -m pip install -r requirements-dev.txt
+            python3 -m pip install -r requirements.txt -r requirements-dev.txt
       - save_cache:
           key: all-deps-{{ checksum "requirements-all.txt"}}
           paths:
@@ -130,59 +138,34 @@ jobs:
   linting:
     # Performs static checks on the code quality
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
       - restore_all_dependency_cache
       - run:
           name: run pylint
-          command: |
-            source env/bin/activate
-            pylint --rcfile=.pylintrc src tests
+          command: make lint
       - run:
           name: run mypy
-          command: |
-            source env/bin/activate
-            mypy --config-file .mypy .
+          command: make typecheck
   unit-tests:
     # Runs the test framework
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
       - restore_all_dependency_cache
       - run:
           name: run tests
-          # Run the test suite
-          #
-          # Steps:
-          # - Stores junit-formatted XML in reports/coverage/test_summary.xml
-          # - Processes the test coverage and stores a coverage report in
-          #   reports/coverage/test_coverage.xml
-          #
-          # Additional args for `pytest`:
-          # * --cov=python_package_template:
-          #     Requests a coverage report of the module
-          # * --junitxml=reports/coverage/test_cov.xml
-          #     Store test coverage report in a junit-formatted XML file
-          # * tests:
-          #     The name of the folder containing the test_*.py files
-          # * -rxXs
-          #     Prints a short summary of the skipped & xfail tests
-          #
-          # Additional args for `coverage`:
-          # * xml:
-          #     Requests XML output format
-          # * -o:
-          #     Specifies the path of the output coverage file
-          command: |
-            source env/bin/activate
-            mkdir reports/coverage --parents
-            python3 -m pytest tests
-            python3 -m pytest --cov=python_package_template --junitxml=reports/coverage/test_summary.xml tests -rxXs
-            coverage xml -o reports/coverage/test_coverage.xml
+          command: make test-coverage
       - store_test_results:
           # Store the auto-generated reports for further analysis (if required)
           # See: https://circleci.com/docs/2.0/collect-test-data/
@@ -193,76 +176,51 @@ jobs:
   security:
     # Checks for vulnerabilities in the code and dependencies
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
       - restore_all_dependency_cache
       - run:
           name: run bandit
-          # Run `bandit` on the directory
-          #
-          # Additional args:
-          # * -r:
-          #   Recurse over the directory contents
-          # * -c .bandit:
-          #   Use the configuration settings in `.bandit`
-          command: |
-            source env/bin/activate
-            bandit -r -c .bandit .
+          command: make security-application
       - run:
           name: run safety
-          # Run `safety` on the current environment
-          command: |
-            source env/bin/activate
-            pip freeze | safety check --stdin
+          command: make security-dependency
   build-dist:
     # Creates the source and built distribution archives
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
       - restore_all_dependency_cache
       - run:
           name: build distribution archives
-          command: |
-            source env/bin/activate
-            python3 -m pip install wheel
-            python3 setup.py sdist bdist_wheel
+          command: make build-dist
       - store_artifacts:
           # Store the build artifacts
           path: dist
   build-docs:
     # Creates the documentation
     docker:
-      - image: cimg/python:3.9
+      - image: christopherszczyglowski/python-package-template:v0.0.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
       - restore_all_dependency_cache
       - run:
           name: build docs
-            # Automatically builds the documentation
-            #
-            # Steps:
-            #   - Build dynamic docmentation from the docstrings in the Python
-            #     files and modules found in `src/python_package_template`
-            #   - Build the static documentation files in `docs/source`
-            #
-            # Additional args for `sphinx-apidoc`:
-            #   * -f:
-            #     Force `apidoc` to overwrite files
-            #   * -o:
-            #     The target directory for the auto-generated docs
-            #
-            # Additional args for `sphinx-build`
-            #   * -b:
-            #     The type of documentation to create
-          command: |
-            source env/bin/activate
-            sphinx-apidoc -f -o docs/source src/python_package_template
-            sphinx-build -b html docs/source docs/build
+          command: make build-docs
       - run:
           name: compress artifacts
           # We compress the artifacts to improve speed and allow all docs to be

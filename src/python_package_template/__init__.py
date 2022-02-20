@@ -7,4 +7,4 @@ Top level package for the `python_package_template` package.
 
 from . import _version
 
-__version__ = _version.get_versions()["version"]
+__version__ = _version.get_versions()["version"]  # type: ignore
