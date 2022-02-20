@@ -67,6 +67,7 @@ commands:
         # Use a partial key match to pick up the cache created in `setup-env`
         # - See: https://circleci.com/docs/2.0/caching/#writing-to-the-cache-in-workflows
           key: all-deps-
+      - run: . ./env/bin/activate
 
 jobs:
   pre-commit:
