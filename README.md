@@ -113,6 +113,8 @@ See `make create-env` and `make install-python-deps` to view the details.
 #### Developer Tools
 This repository uses the following developer tools:
 
+-   [Docker](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/container-docker-introduction/docker-defined) - Running services in isolated environments
+-   [VS Code Developer Containers](https://code.visualstudio.com/docs/remote/create-dev-container) - Writing and testing code in isolated environments
 * [pre-commit](https://pre-commit.com/): `pre-commit` is provided as a developer dependency. To install pre-commit use `pre-commit install` and then run on all files using `pre-commit run --all-files`
 * [CircleCI](https://circleci.com/): Continuous Integration is provided by CircleCI. The [CircleCI CLI](https://circleci.com/docs/2.0/local-cli/) can be used to debug CI jobs locally.
 * [pylint](https://pypi.org/project/pylint/): Linting is provided by `pylint`
@@ -120,7 +122,9 @@ This repository uses the following developer tools:
 * [bandit](https://pypi.org/project/bandit/): Code security is provided by `bandit`
 * [safety](https://pypi.org/project/safety/): `safety` is used to scan dependencies for vulnerabilities.
 
-Example settings are provided in the `.devcontainer.json`.
+Example settings are provided in the [`.devcontainer.json`](.devcontainer.json).
+
+Further details can be found in [DEVELOPMENT.md](docs/DEVELOPMENT.md)
 
 ### Test
 Testing is provided by `pytest` and test files are defined in the `tests`

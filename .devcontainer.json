@@ -29,6 +29,10 @@
         "python.testing.pytestArgs": [
             "tests"
         ],
+        "gitlens.advanced.blame.customArguments": [
+            "–ignore-revs-file",
+            ".git-blame-ignore-revs"
+        ],
         "[json]": {
             "editor.defaultFormatter": "vscode.json-language-features"
         }
