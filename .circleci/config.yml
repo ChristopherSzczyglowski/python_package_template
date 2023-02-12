@@ -110,7 +110,7 @@ jobs:
             - ~/.cache/pre-commit
   build-image:
     docker:
-      - image: cimg/python:3.9
+      - image: docker:23.0.1-git
     resource_class: small
     steps:
       - checkout
