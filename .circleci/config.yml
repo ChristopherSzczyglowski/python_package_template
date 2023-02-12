@@ -111,6 +111,9 @@ jobs:
   build-image:
     docker:
       - image: docker:23.0.1-git
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     resource_class: small
     steps:
       - checkout
@@ -122,7 +125,6 @@ jobs:
           command: |
             TAG=v0.0.1-$CIRCLE_SHA1
             docker build . -t $TAG -f Dockerfile
-            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push $TAG
   setup-env:
     # Provides the environment to run the remaining jobs
