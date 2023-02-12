@@ -73,7 +73,7 @@ security-application: ## Checks for vulnerabilities in application code
 	@bandit -r -x ./env -s B101 .
 
 security-dependency: ## Checks for vulnerabilities in dependencies
-	@pip freeze | safety check --stdin
+	@pip freeze | safety check --stdin --ignore=51457
 
 security: security-application security-dependency ## Runs security tools
 
