@@ -105,6 +105,16 @@ jobs:
           key: pre-commit-cache-{{ checksum "pre-commit-cache-key.txt" }}
           paths:
             - ~/.cache/pre-commit
+  build-image:
+    docker:
+      - image: cimg/python:3.9
+    resource_class: small
+    steps:
+      - checkout
+      - build:
+        name: build docker image
+        command: |
+          docker build . -t python-package-template -f Dockerfile
   setup-env:
     # Provides the environment to run the remaining jobs
     docker:
