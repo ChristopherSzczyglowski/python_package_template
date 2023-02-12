@@ -37,6 +37,9 @@ workflows:
   setup-test-build:
     jobs:
       - pre-commit
+      - build-image:
+          requires:
+            - pre-commit
       - setup-env:
           context: dockerhub
           requires:
@@ -111,10 +114,10 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - build:
-        name: build docker image
-        command: |
-          docker build . -t python-package-template -f Dockerfile
+      - run:
+          name: build docker image
+          command: |
+            docker build . -t python-package-template -f Dockerfile
   setup-env:
     # Provides the environment to run the remaining jobs
     docker:
