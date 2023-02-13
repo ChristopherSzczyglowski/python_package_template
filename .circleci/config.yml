@@ -38,6 +38,7 @@ workflows:
     jobs:
       - pre-commit
       - build-image:
+          context: dockerhub
           requires:
             - pre-commit
       - setup-env:
