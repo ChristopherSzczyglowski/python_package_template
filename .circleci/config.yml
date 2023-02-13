@@ -124,9 +124,7 @@ jobs:
       - run:
           name: build docker image
           command: |
-            DOCKERHUB_PROFILE=christopherszczyglowski
-            DOCKERHUB_REPOSITORY_NAME=python-package-template
-            TAG=$DOCKERHUB_PROFILE/$DOCKERHUB_REPOSITORY_NAME:v0.0.1-$CIRCLE_SHA1
+            TAG=$DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
             docker build . -t $TAG -f Dockerfile
       - run:
           name: authenticate with dockerhub
