@@ -128,7 +128,13 @@ jobs:
             DOCKERHUB_REPOSITORY_NAME=python-package-template
             TAG=$DOCKERHUB_PROFILE/$DOCKERHUB_REPOSITORY_NAME:v0.0.1-$CIRCLE_SHA1
             docker build . -t $TAG -f Dockerfile
+      - run:
+          name: authenticate with dockerhub
+          command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+      - run:
+          name: push to dockerhub
+          command: |
             docker push $TAG
   setup-env:
     # Provides the environment to run the remaining jobs
