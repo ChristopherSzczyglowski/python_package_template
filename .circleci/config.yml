@@ -192,7 +192,7 @@ jobs:
   build-docs:
     # Creates the documentation
     docker:
-      - image: christopherszczyglowski/python-package-template:v0.0.1
+      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
