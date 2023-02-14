@@ -28,7 +28,7 @@ version: 2.1
 
 orbs:
   # https://circleci.com/developer/orbs/orb/codecov/codecov
-  codecov: codecov/codecov@1.2.5
+  codecov: codecov/codecov@3.2.4
 
 # See: https://circleci.com/docs/2.0/workflows/
 workflows:
