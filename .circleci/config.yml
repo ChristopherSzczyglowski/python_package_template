@@ -56,11 +56,11 @@ workflows:
       - unit-tests:
           context: dockerhub
           requires:
-            - setup-env
+            - upload-image
       - security:
           context: dockerhub
           requires:
-            - setup-env
+            - upload-image
       - build-dist:
           context: dockerhub
           requires:
@@ -195,7 +195,7 @@ jobs:
   linting:
     # Performs static checks on the code quality
     docker:
-      - image: christopherszczyglowski/python-package-template:v0.0.1
+      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -212,7 +212,7 @@ jobs:
   unit-tests:
     # Runs the test framework
     docker:
-      - image: christopherszczyglowski/python-package-template:v0.0.1
+      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -233,7 +233,7 @@ jobs:
   security:
     # Checks for vulnerabilities in the code and dependencies
     docker:
-      - image: christopherszczyglowski/python-package-template:v0.0.1
+      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -250,7 +250,7 @@ jobs:
   build-dist:
     # Creates the source and built distribution archives
     docker:
-      - image: christopherszczyglowski/python-package-template:v0.0.1
+      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
