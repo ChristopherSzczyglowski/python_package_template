@@ -156,7 +156,7 @@ jobs:
           path: reports
       - codecov/upload:
           # Provide a copy of the test coverage report to CodeCov
-          file: reports/coverage/test_coverage.xml
+          file: reports/test_coverage.xml
   security:
     # Checks for vulnerabilities in the code and dependencies
     docker:
