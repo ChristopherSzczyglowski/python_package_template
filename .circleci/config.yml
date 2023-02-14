@@ -52,7 +52,7 @@ workflows:
       - linting:
           context: dockerhub
           requires:
-            - setup-env
+            - upload-image
       - unit-tests:
           context: dockerhub
           requires:
