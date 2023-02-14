@@ -48,7 +48,7 @@ test-coverage: ## Run the full test suite and generate coverage reports
 	@mkdir reports/coverage --parents && \
 	python3 -m pytest -rxXs \
 	--cov=$(APPLICATION_DIR) \
-	--junitxml=test_summary.xml \
+	--junitxml=reports/test_summary.xml \
 	--cov-report xml:test_coverage.xml && \
 	coverage xml -o reports/coverage/test_coverage.xml
 
