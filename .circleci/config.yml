@@ -112,7 +112,7 @@ jobs:
           name: build docker image
           command: |
             TAG=$DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
-            docker build . -t $TAG -f Dockerfile
+            docker build . -t $TAG -f .devcontainer/Dockerfile
       - run:
           name: authenticate with dockerhub
           command: |
