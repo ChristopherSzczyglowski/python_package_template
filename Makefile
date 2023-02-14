@@ -50,7 +50,7 @@ test-coverage: ## Run the full test suite and generate coverage reports
 	--cov=$(APPLICATION_DIR) \
 	--junitxml=reports/test_summary.xml \
 	--cov-report xml:test_coverage.xml && \
-	coverage xml -o reports/coverage/test_coverage.xml
+	coverage xml -o reports/test_coverage.xml
 
 lint: ## Run linting tools on the application code
 	@python3 -m pylint $(APPLICATION_DIR) $(TEST_DIR)
