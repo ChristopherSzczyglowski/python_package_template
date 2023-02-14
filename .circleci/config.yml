@@ -69,14 +69,6 @@ workflows:
             - unit-tests
             - security
 
-commands:
-  restore_all_dependency_cache:
-    steps:
-      - restore_cache:
-          # Use a partial key match to pick up the cache created in `setup-env`
-          # - See: https://circleci.com/docs/2.0/caching/#writing-to-the-cache-in-workflows
-          key: all-deps-
-
 jobs:
   pre-commit:
     # Runs pre-commit checks on the repository
@@ -167,7 +159,6 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - restore_all_dependency_cache
       - run:
           name: run pylint
           command: make lint
@@ -184,7 +175,6 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - restore_all_dependency_cache
       - run:
           name: run tests
           command: make test-coverage
@@ -205,7 +195,6 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - restore_all_dependency_cache
       - run:
           name: run bandit
           command: make security-application
@@ -222,7 +211,6 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - restore_all_dependency_cache
       - run:
           name: build distribution archives
           command: make build-dist
@@ -239,7 +227,6 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - restore_all_dependency_cache
       - run:
           name: build docs
           command: make build-docs
