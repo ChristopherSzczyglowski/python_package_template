@@ -30,6 +30,14 @@ orbs:
   # https://circleci.com/developer/orbs/orb/codecov/codecov
   codecov: codecov/codecov@3.2.4
 
+executors:
+  devcontainer:
+    docker:
+      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+
 # See: https://circleci.com/docs/2.0/workflows/
 workflows:
   version: 2
@@ -123,11 +131,7 @@ jobs:
             docker push $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
   linting:
     # Performs static checks on the code quality
-    docker:
-      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+    executor: devcontainer
     resource_class: small
     steps:
       - checkout
@@ -139,11 +143,7 @@ jobs:
           command: make typecheck
   unit-tests:
     # Runs the test framework
-    docker:
-      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+    executor: devcontainer
     resource_class: small
     steps:
       - checkout
@@ -159,11 +159,7 @@ jobs:
           file: reports/test_coverage.xml
   security:
     # Checks for vulnerabilities in the code and dependencies
-    docker:
-      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+    executor: devcontainer
     resource_class: small
     steps:
       - checkout
@@ -175,11 +171,7 @@ jobs:
           command: make security-dependency
   build-dist:
     # Creates the source and built distribution archives
-    docker:
-      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+    executor: devcontainer
     resource_class: small
     steps:
       - checkout
@@ -191,11 +183,7 @@ jobs:
           path: dist
   build-docs:
     # Creates the documentation
-    docker:
-      - image: $DOCKERHUB_REPO_NAME:v0.0.1-$CIRCLE_SHA1
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+    executor: devcontainer
     resource_class: small
     steps:
       - checkout
