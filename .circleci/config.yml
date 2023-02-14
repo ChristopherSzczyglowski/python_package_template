@@ -40,22 +40,18 @@ workflows:
           context: dockerhub
           requires:
             - pre-commit
-      - upload-image:
-          context: dockerhub
-          requires:
-            - build-image
       - linting:
           context: dockerhub
           requires:
-            - upload-image
+            - build-image
       - unit-tests:
           context: dockerhub
           requires:
-            - upload-image
+            - build-image
       - security:
           context: dockerhub
           requires:
-            - upload-image
+            - build-image
       - build-dist:
           context: dockerhub
           requires:
