@@ -1,6 +1,7 @@
 {
     "name": "python-template",
     "dockerFile": "Dockerfile",
+    "context": "..",
     "extensions": [
         "ms-azuretools.vscode-docker",
         "ms-python.python",

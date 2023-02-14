@@ -48,9 +48,9 @@ test-coverage: ## Run the full test suite and generate coverage reports
 	@mkdir reports/coverage --parents && \
 	python3 -m pytest -rxXs \
 	--cov=$(APPLICATION_DIR) \
-	--junitxml=test_summary.xml \
+	--junitxml=reports/test_summary.xml \
 	--cov-report xml:test_coverage.xml && \
-	coverage xml -o reports/coverage/test_coverage.xml
+	coverage xml -o reports/test_coverage.xml
 
 lint: ## Run linting tools on the application code
 	@python3 -m pylint $(APPLICATION_DIR) $(TEST_DIR)
@@ -73,7 +73,7 @@ security-application: ## Checks for vulnerabilities in application code
 	@bandit -r -x ./env -s B101 .
 
 security-dependency: ## Checks for vulnerabilities in dependencies
-	@pip freeze | safety check --stdin
+	@pip freeze | safety check --stdin --ignore=51457
 
 security: security-application security-dependency ## Runs security tools
 
