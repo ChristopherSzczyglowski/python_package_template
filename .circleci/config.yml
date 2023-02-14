@@ -153,7 +153,7 @@ jobs:
       - store_test_results:
           # Store the auto-generated reports for further analysis (if required)
           # See: https://circleci.com/docs/2.0/collect-test-data/
-          path: reports
+          path: reports/coverage
       - codecov/upload:
           # Provide a copy of the test coverage report to CodeCov
           file: reports/coverage/test_coverage.xml
